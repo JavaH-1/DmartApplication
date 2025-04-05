@@ -2,22 +2,23 @@ package com.service;
 
 import com.dao.UserDAO;
 import com.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserServiceImpl implements UserService {
 
-    private UserDAO userDAO;
+    private final UserDAO userDAO;
 
-    // Setter for Dependency Injection via XML
-    public void setUserDAO(UserDAO userDAO) {
+    @Autowired
+    public UserServiceImpl(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
     @Override
     public void register(User user) {
-        user.setRole("USER");
-        user.setEnabled(true);
         userDAO.saveUser(user);
     }
 

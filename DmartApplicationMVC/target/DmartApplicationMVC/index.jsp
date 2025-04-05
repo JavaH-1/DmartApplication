@@ -4,6 +4,6 @@
 <head><title>Home</title></head>
 <body>
 <h2>Welcome to D-Mart App</h2>
-<a href="register">Register</a> | <a href="login">Login</a>
+<a href="dmart/register">Register</a> | <a href="login">Login</a>
 </body>
 </html>

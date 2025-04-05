@@ -3,7 +3,7 @@
   <groupId>com.homepage</groupId>
   <artifactId>DmartApplicationMVC</artifactId>
   <versioning>
-    <lastUpdated>20250404105946</lastUpdated>
+    <lastUpdated>20250405184536</lastUpdated>
     <snapshot>
       <localCopy>true</localCopy>
     </snapshot>
@@ -11,12 +11,12 @@
       <snapshotVersion>
         <extension>pom</extension>
         <value>0.0.1-SNAPSHOT</value>
-        <updated>20250404105946</updated>
+        <updated>20250405184536</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>war</extension>
         <value>0.0.1-SNAPSHOT</value>
-        <updated>20250404105946</updated>
+        <updated>20250405184536</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>

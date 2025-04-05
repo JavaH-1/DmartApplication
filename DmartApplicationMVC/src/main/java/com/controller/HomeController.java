@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/Dmart")  // Base path
+@RequestMapping("/")  // Base path
 public class HomeController {
 
     private final UserService userService;
