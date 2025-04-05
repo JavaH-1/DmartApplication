@@ -1,1 +1,4 @@
+com\controller\DmartController.class
 com\config\AppConfig.class
+com\config\WebAppInitializer.class
+com\controller\HomeController.class
