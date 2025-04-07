@@ -70,7 +70,12 @@ public class UserController {
         User user = service.loginUser(username, password);
         if (user != null) {
             session.setAttribute("user", user);
-            return "redirect:/dashboard"; // ✅ Redirect to /dashboard to load products
+
+            if ("Admin".equalsIgnoreCase(user.getUsertype())) {
+                return "redirect:/admin/dashboard"; // 🔄 Admin gets redirected here
+            }
+
+            return "redirect:/dashboard"; // Regular user
         } else {
             model.addAttribute("msg", "❌ Invalid username or password");
             model.addAttribute("type", "danger");
@@ -99,4 +104,49 @@ public class UserController {
         session.invalidate();
         return "redirect:/";
     }
+    
+    //ADMIN access controllers
+    @GetMapping("/admin/dashboard")
+    public String adminDashboard(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+
+        if (user != null && "admin".equalsIgnoreCase(user.getUsertype())) {
+            // Fetch all products
+            List<Product> productList = productService.getAllProducts();
+            model.addAttribute("productList", productList);
+
+            // Fetch customers only
+            List<User> customerList = service.getAllCustomers(); // You’ll add this method in UserService
+            model.addAttribute("customerList", customerList);
+
+            return "admin-dashboard";
+        }
+
+        return "redirect:/login";
+    }
+
+    @PostMapping("/admin/addProduct")
+    public String addProduct(@ModelAttribute Product product, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+
+        if (user != null && "admin".equalsIgnoreCase(user.getUsertype())) {
+            productService.addProduct(product); // You’ll add this in ProductService
+            return "redirect:/admin/dashboard";
+        }
+
+        return "redirect:/login";
+    }
+
+    @GetMapping("/admin/deleteProduct/{id}")
+    public String deleteProduct(@PathVariable("id") int id, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+
+        if (user != null && "admin".equalsIgnoreCase(user.getUsertype())) {
+            productService.deleteProduct(id); // You’ll add this in ProductService
+            return "redirect:/admin/dashboard";
+        }
+
+        return "redirect:/login";
+    }
+
 }
