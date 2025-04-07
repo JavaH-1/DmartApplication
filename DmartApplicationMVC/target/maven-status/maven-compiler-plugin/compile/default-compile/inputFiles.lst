@@ -1,9 +1,12 @@
 D:\Git Clone Repositories\DmartApplication\DmartApplicationMVC\src\main\java\com\dmart\model\State.java
 D:\Git Clone Repositories\DmartApplication\DmartApplicationMVC\src\main\java\com\dmart\service\UserServiceImpl.java
 D:\Git Clone Repositories\DmartApplication\DmartApplicationMVC\src\main\java\com\dmart\config\AppConfig.java
+D:\Git Clone Repositories\DmartApplication\DmartApplicationMVC\src\main\java\com\dmart\model\Product.java
 D:\Git Clone Repositories\DmartApplication\DmartApplicationMVC\src\main\java\com\dmart\controller\UserController.java
 D:\Git Clone Repositories\DmartApplication\DmartApplicationMVC\src\main\java\com\dmart\model\City.java
 D:\Git Clone Repositories\DmartApplication\DmartApplicationMVC\src\main\java\com\dmart\dao\UserDAO.java
 D:\Git Clone Repositories\DmartApplication\DmartApplicationMVC\src\main\java\com\dmart\model\User.java
 D:\Git Clone Repositories\DmartApplication\DmartApplicationMVC\src\main\java\com\dmart\dao\UserDAOImpl.java
+D:\Git Clone Repositories\DmartApplication\DmartApplicationMVC\src\main\java\com\dmart\service\ProductService.java
+D:\Git Clone Repositories\DmartApplication\DmartApplicationMVC\src\main\java\com\dmart\dao\ProductDAO.java
 D:\Git Clone Repositories\DmartApplication\DmartApplicationMVC\src\main\java\com\dmart\service\UserService.java

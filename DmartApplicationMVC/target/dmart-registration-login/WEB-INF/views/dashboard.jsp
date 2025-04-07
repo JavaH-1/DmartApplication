@@ -1,13 +1,17 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D-Mart Dashboard</title>
+
+    <!-- Bootstrap & Icons -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
     <style>
         body {
             background-color: #121212;
@@ -27,31 +31,44 @@
             margin-top: 50px;
         }
 
-        .card {
+        .small-card {
             background-color: #1e1e2f;
             color: #ffffff;
             border: none;
-            border-radius: 1rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            border-radius: 0.75rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s ease;
         }
 
-        .card:hover {
-            transform: translateY(-10px);
+        .small-card:hover {
+            transform: translateY(-5px);
         }
 
-        .card i {
-            font-size: 40px;
-            margin-bottom: 15px;
-            color: #ff9800;
+        .product-image-mini {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-top: 10px;
         }
 
-        .card-title {
-            font-size: 1.5rem;
+        .btn-add {
+            background-color: #ff9800;
+            color: #fff;
+            border: none;
+            font-size: 0.85rem;
+        }
+
+        .btn-add:hover {
+            background-color: #e68900;
+        }
+
+        .card-title, .card-text {
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
         }
 
         footer {
-            margin-top: 182px;
+            margin-top: 60px;
             padding: 20px;
             background-color: #1f1f1f;
             color: #bbb;
@@ -61,53 +78,55 @@
 </head>
 
 <body>
+    <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <a class="navbar-brand animate__animated animate__fadeInLeft" href="#"><i class="fas fa-store"></i> D-Mart</a>
-        <div class="collapse navbar-collapse">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse animate__animated animate__fadeInRight" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link animate__animated animate__fadeInRight" href="#">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link animate__animated animate__fadeInRight" href="logout">Logout</a>
-                </li>
+                <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Product List</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">View Cart</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Delivery Tracking</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Payments</a></li>
+                <li class="nav-item"><a class="nav-link" href="logout">Logout</a></li>
             </ul>
         </div>
     </nav>
 
+    <!-- Welcome Section -->
     <div class="container text-center animate__animated animate__fadeInUp">
-        <h1 class="mb-4">Welcome to D-Mart, <strong>${user.username}</strong></h1>
+        <h2 class="mb-4">Welcome to D-Mart, <strong>${user.username}</strong></h2>
+
+        <!-- Product Display Grid -->
         <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card p-4">
-                    <i class="fas fa-shopping-cart"></i>
-                    <h5 class="card-title">Orders</h5>
-                    <p class="card-text">Track your latest orders in real-time.</p>
+            <c:forEach var="product" items="${productList}">
+                <div class="col-6 col-sm-3 mb-3">
+                    <div class="card text-center p-2 small-card">
+                        <img src="${product.imageUrl}" class="card-img-top product-image-mini mx-auto" alt="Product">
+                        <div class="card-body p-2">
+                            <h6 class="card-title">${product.name}</h6>
+                            <p class="card-text">₹${product.price}</p>
+                            <form method="post" action="addToCart">
+                                <input type="hidden" name="productId" value="${product.id}" />
+                                <button type="submit" class="btn btn-sm btn-add btn-block">Add</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card p-4">
-                    <i class="fas fa-box"></i>
-                    <h5 class="card-title">Products</h5>
-                    <p class="card-text">View and manage available products.</p>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card p-4">
-                    <i class="fas fa-users"></i>
-                    <h5 class="card-title">Customers</h5>
-                    <p class="card-text">Explore customer details and their activity.</p>
-                </div>
-            </div>
+            </c:forEach>
         </div>
     </div>
 
+    <!-- Footer -->
     <footer>
         <p>&copy; 2025 D-Mart. All rights reserved.</p>
     </footer>
 
+    <!-- JS Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

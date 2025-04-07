@@ -1,0 +1,19 @@
+package com.dmart.service;
+
+import com.dmart.dao.ProductDAO;
+import com.dmart.model.Product;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class ProductService {
+
+    @Autowired
+    private ProductDAO productDAO; // ✅ Injected by Spring
+
+    public List<Product> getAllProducts() {
+        return productDAO.getAllProducts();
+    }
+}

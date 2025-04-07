@@ -1,6 +1,7 @@
 package com.dmart.controller;
 
 import com.dmart.model.*;
+import com.dmart.service.ProductService;
 import com.dmart.service.UserService;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -14,6 +15,9 @@ public class UserController {
 
     @Autowired
     private UserService service;
+    
+    @Autowired
+    private ProductService productService;
 
     @GetMapping("/")
     public String welcome() {
@@ -78,8 +82,16 @@ public class UserController {
     }
 
     @GetMapping("/dashboard")
-    public String dashboard() {
-        return "dashboard";
+    public String dashboard(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            model.addAttribute("user", user);
+            List<Product> productList = productService.getAllProducts();
+            model.addAttribute("productList", productList);
+            return "dashboard";
+        } else {
+            return "redirect:/login";
+        }
     }
 
     @GetMapping("/logout")

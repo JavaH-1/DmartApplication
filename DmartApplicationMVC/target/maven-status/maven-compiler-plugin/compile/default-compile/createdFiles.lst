@@ -4,6 +4,9 @@ com\dmart\service\UserServiceImpl.class
 com\dmart\service\UserService.class
 com\dmart\dao\UserDAO.class
 com\dmart\dao\UserDAOImpl.class
+com\dmart\model\Product.class
 com\dmart\model\City.class
 com\dmart\model\State.class
+com\dmart\service\ProductService.class
 com\dmart\config\AppConfig.class
+com\dmart\dao\ProductDAO.class

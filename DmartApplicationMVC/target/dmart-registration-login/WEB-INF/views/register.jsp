@@ -49,16 +49,16 @@
         }
 
         .logo {
-    display: block;
-    margin: 0 auto 20px auto;
-    max-width: 120px;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #ffc107;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
+             display: block;
+             margin: 0 auto 20px auto;
+             max-width: 120px;
+             width: 100px;
+             height: 100px;
+             border-radius: 50%;
+             object-fit: cover;
+             border: 3px solid #ffc107;
+             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
 
         }
 
