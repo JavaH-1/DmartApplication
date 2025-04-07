@@ -38,9 +38,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v9.0"/>
-	<classpathentry kind="src" path="/RetailManagementProjectMVC"/>
-	<classpathentry kind="src" path="/springmvc-user-reg-login"/>
-	<classpathentry kind="src" path="/CoreJavaIsoft"/>
-	<classpathentry kind="src" path="/MVCProject"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
