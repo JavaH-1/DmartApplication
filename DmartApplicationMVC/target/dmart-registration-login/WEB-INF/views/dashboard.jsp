@@ -21,6 +21,7 @@
 
         .navbar {
             background-color: #1f1f1f;
+              padding: 35px;
         }
 
         .navbar-brand, .nav-link {
@@ -68,8 +69,8 @@
         }
 
         footer {
-            margin-top: 60px;
-            padding: 20px;
+            margin-top: 300px;
+            padding: 35px;
             background-color: #1f1f1f;
             color: #bbb;
             text-align: center;
