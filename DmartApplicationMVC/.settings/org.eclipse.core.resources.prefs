@@ -1,6 +1,10 @@
 eclipse.preferences.version=1
+<<<<<<< HEAD
 encoding//src/main/java=UTF-8
 encoding//src/main/resources=UTF-8
 encoding//src/test/java=UTF-8
 encoding//src/test/resources=UTF-8
 encoding/<project>=UTF-8
+=======
+encoding//src/main/webapp/WEB-INF/views/admin-dashboard.jsp=UTF-8
+>>>>>>> branch 'main' of https://github.com/JavaH-1/DmartApplication.git

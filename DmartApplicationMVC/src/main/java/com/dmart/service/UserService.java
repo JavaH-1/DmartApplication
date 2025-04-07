@@ -8,7 +8,9 @@ public interface UserService {
     User loginUser(String username, String password);
     List<State> getAllStates();
     List<City> getCitiesByStateId(int stateId);
+    List<User> getAllCustomers();
 
+    
     // ✅ Added method
     boolean checkEmailExists(String email);
 }
