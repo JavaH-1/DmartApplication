@@ -18,6 +18,13 @@ CREATE TABLE users (
     FOREIGN KEY (city_id) REFERENCES cities(id)
 );
 
+INSERT INTO users (
+    fullname, username, email, mobile, password, address,
+    state_id, city_id, pincode, usertype
+) VALUES (
+    'Admin User', 'admin', 'admin@dmart.com', '9999999999', 'admin123',
+    'Dmart Headquarters', 1, 1, '123456', 'Admin'
+);
 
 -- States Table
 CREATE TABLE states (
