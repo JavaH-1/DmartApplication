@@ -48,6 +48,8 @@ public class UserDAOImpl implements UserDAO {
                 user.setId(rs.getInt("id"));
                 user.setUsername(username);
                 user.setFullname(rs.getString("fullname"));
+                user.setEmail(rs.getString("email"));
+                user.setUsertype(rs.getString("usertype")); // ✅ Critical line added
                 return user;
             }
         } catch (Exception e) {
@@ -55,6 +57,7 @@ public class UserDAOImpl implements UserDAO {
         }
         return null;
     }
+
 
     @Override
     public List<State> getAllStates() {
