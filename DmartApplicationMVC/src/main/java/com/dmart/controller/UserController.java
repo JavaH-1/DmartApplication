@@ -70,10 +70,7 @@ public class UserController {
         User user = service.loginUser(username, password);
         if (user != null) {
             session.setAttribute("user", user);
-            model.addAttribute("msg", "✅ Login successful!");
-            model.addAttribute("type", "success");
-            model.addAttribute("redirect", "dashboard.jsp"); // For 2-sec delay redirect
-            return "dashboard";
+            return "redirect:/dashboard"; // ✅ Redirect to /dashboard to load products
         } else {
             model.addAttribute("msg", "❌ Invalid username or password");
             model.addAttribute("type", "danger");
@@ -86,13 +83,16 @@ public class UserController {
         User user = (User) session.getAttribute("user");
         if (user != null) {
             model.addAttribute("user", user);
+
             List<Product> productList = productService.getAllProducts();
             model.addAttribute("productList", productList);
+
             return "dashboard";
         } else {
             return "redirect:/login";
         }
     }
+
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {

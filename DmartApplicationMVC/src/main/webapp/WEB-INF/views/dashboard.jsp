@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>D-Mart Dashboard</title>
@@ -14,70 +13,120 @@
 
     <style>
         body {
-            background-color: #121212;
-            color: #ffffff;
+            background-color: #0d0d0d;
+            color: #fff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .navbar {
-            background-color: #1f1f1f;
-              padding: 35px;
+            background-color: #1c1c1c;
+            padding: 20px;
         }
 
         .navbar-brand, .nav-link {
-            color: #fff !important;
+            color: #ffffff !important;
+            font-weight: 500;
+            font-size: 1rem;
         }
 
         .container {
-            margin-top: 50px;
+            margin-top: 40px;
         }
 
-        .small-card {
-            background-color: #1e1e2f;
+        .product-card {
+            background-color: #1a1a1a;
+            border-radius: 20px;
+            padding: 20px;
+            width: 100%;
+            max-width: 310px;
+            height: 350px;
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+        }
+
+        .product-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .product-image {
+            width: 140px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #ffffff;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: bold;
             color: #ffffff;
-            border: none;
-            border-radius: 0.75rem;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease;
-        }
-
-        .small-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .product-image-mini {
-            width: 60px;
-            height: 60px;
-            object-fit: contain;
             margin-top: 10px;
+        }
+
+        .strike {
+            text-decoration: line-through;
+            color: #999999;
+            font-size: 0.85rem;
+        }
+
+        .price {
+            color: #ffcc00;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .discount {
+            background-color: #2e7d32;
+            color: #fff;
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 10px;
+            margin-top: 4px;
+            display: inline-block;
         }
 
         .btn-add {
             background-color: #ff9800;
             color: #fff;
+            font-weight: bold;
+            width: 100%;
             border: none;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            padding: 8px 0;
+            border-radius: 8px;
         }
 
         .btn-add:hover {
             background-color: #e68900;
         }
 
-        .card-title, .card-text {
-            font-size: 0.9rem;
-            margin-bottom: 0.25rem;
+        .welcome-msg {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            color: #ffcc00;
         }
 
         footer {
-            margin-top: 300px;
-            padding: 35px;
-            background-color: #1f1f1f;
+            margin-top: 100px;
+            padding: 20px;
+            background-color: #1c1c1c;
             color: #bbb;
             text-align: center;
         }
+
+        @media (max-width: 768px) {
+            .product-card {
+                height: auto;
+            }
+        }
     </style>
 </head>
-
 <body>
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
@@ -90,7 +139,7 @@
                 <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Product List</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">View Cart</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Delivery Tracking</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Track Order</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Payments</a></li>
                 <li class="nav-item"><a class="nav-link" href="logout">Logout</a></li>
             </ul>
@@ -99,22 +148,24 @@
 
     <!-- Welcome Section -->
     <div class="container text-center animate__animated animate__fadeInUp">
-        <h2 class="mb-4">Welcome to D-Mart, <strong>${user.username}</strong></h2>
+        <div class="welcome-msg">
+            Welcome to D-Mart, <strong>${user.username != null ? user.username : 'Guest'}</strong>
+        </div>
 
-        <!-- Product Display Grid -->
-        <div class="row">
+        <!-- Product Grid -->
+        <div class="row justify-content-center">
             <c:forEach var="product" items="${productList}">
-                <div class="col-6 col-sm-3 mb-3">
-                    <div class="card text-center p-2 small-card">
-                        <img src="${product.imageUrl}" class="card-img-top product-image-mini mx-auto" alt="Product">
-                        <div class="card-body p-2">
-                            <h6 class="card-title">${product.name}</h6>
-                            <p class="card-text">₹${product.price}</p>
-                            <form method="post" action="addToCart">
-                                <input type="hidden" name="productId" value="${product.id}" />
-                                <button type="submit" class="btn btn-sm btn-add btn-block">Add</button>
-                            </form>
-                        </div>
+                <div class="col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
+                    <div class="product-card">
+                        <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                        <div class="product-title">${product.name}</div>
+                        <div><span class="strike">₹${product.mrp}</span></div>
+                        <div class="price">₹${product.dmartPrice}</div>
+                        <div class="discount">${product.discount} OFF</div>
+                        <form method="post" action="addToCart" style="width: 100%;">
+                            <input type="hidden" name="productId" value="${product.id}" />
+                            <button type="submit" class="btn btn-add mt-2"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                        </form>
                     </div>
                 </div>
             </c:forEach>
@@ -126,7 +177,7 @@
         <p>&copy; 2025 D-Mart. All rights reserved.</p>
     </footer>
 
-    <!-- JS Scripts -->
+    <!-- JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
