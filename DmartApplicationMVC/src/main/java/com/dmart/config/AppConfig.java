@@ -25,7 +25,7 @@ public class AppConfig implements WebMvcConfigurer {
         ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
         ds.setUrl("jdbc:mysql://localhost:3306/Dmart_DataBase");
         ds.setUsername("root");
-        ds.setPassword("root");
+        ds.setPassword("Password12@");
         return ds;
     }
 }
