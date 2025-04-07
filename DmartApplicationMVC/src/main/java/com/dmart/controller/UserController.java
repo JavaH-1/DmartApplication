@@ -3,6 +3,8 @@ package com.dmart.controller;
 import com.dmart.model.*;
 import com.dmart.service.ProductService;
 import com.dmart.service.UserService;
+
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,6 +149,41 @@ public class UserController {
         }
 
         return "redirect:/login";
+    }
+    @PostMapping("/addToCart")
+    public String addToCart(@RequestParam("productId") int productId, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
+
+        List<Product> cart = (List<Product>) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new ArrayList<>();
+        }
+
+        Product product = productService.getProductById(productId); // service method to fetch single product
+        if (product != null) {
+            cart.add(product);
+            session.setAttribute("cart", cart);
+        }
+
+        return "redirect:/dashboard";
+    }
+
+    @GetMapping("/viewcart")
+    public String viewCart(HttpSession session, Model model) {
+        List<Product> cartItems = (List<Product>) session.getAttribute("cart");
+        model.addAttribute("cartItems", cartItems);
+        return "viewcart";
+    }
+
+    @GetMapping("/removeFromCart")
+    public String removeFromCart(@RequestParam("productId") int productId, HttpSession session) {
+        List<Product> cart = (List<Product>) session.getAttribute("cart");
+        if (cart != null) {
+            cart.removeIf(p -> p.getId() == productId);
+            session.setAttribute("cart", cart);
+        }
+        return "redirect:/viewcart";
     }
 
 }

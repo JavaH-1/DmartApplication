@@ -60,7 +60,7 @@
             <td>${product.name}</td>
             <td>${product.mrp}</td>
             <td>${product.dmartPrice}</td>
-            <td>${product.discount} %</td>
+            <td>${product.discount} &#8377;</td>
             <td>${product.unit}</td>
             <td>
                 <c:if test="${not empty product.imageUrl}">

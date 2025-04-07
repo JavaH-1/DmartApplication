@@ -138,7 +138,7 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Product List</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">View Cart</a></li>
+                <li class="nav-item"><a class="nav-link" href="viewcart">View Cart</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Track Order</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Payments</a></li>
                 <li class="nav-item"><a class="nav-link" href="logout">Logout</a></li>

@@ -34,5 +34,21 @@ public class ProductServiceImpl implements ProductService {
         String sql = "DELETE FROM products WHERE id = ?";
         jdbcTemplate.update(sql, id);
     }
+    
+    @Override
+    public Product getProductById(int productId) {
+        String sql = "SELECT * FROM products WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{productId}, (rs, rowNum) -> {
+            Product p = new Product();
+            p.setId(rs.getInt("id"));
+            p.setName(rs.getString("name"));
+            p.setMrp(rs.getDouble("mrp"));
+            p.setDmartPrice(rs.getDouble("dmart_price"));
+            p.setDiscount(rs.getDouble("discount"));
+            p.setImageUrl(rs.getString("image_url"));
+            p.setUnit(rs.getString("unit"));
+            return p;
+        });
+    }
 
 }

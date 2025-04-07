@@ -138,7 +138,7 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Product List</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">View Cart</a></li>
+                <li class="nav-item"><a class="nav-link" href="viewcart">View Cart</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Track Order</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Payments</a></li>
                 <li class="nav-item"><a class="nav-link" href="logout">Logout</a></li>
@@ -161,7 +161,7 @@
                         <div class="product-title">${product.name}</div>
                         <div><span class="strike">₹${product.mrp}</span></div>
                         <div class="price">₹${product.dmartPrice}</div>
-                        <div class="discount">${product.discount} OFF</div>
+                        <div class="discount">&#8377;${product.discount} OFF</div>
                         <form method="post" action="addToCart" style="width: 100%;">
                             <input type="hidden" name="productId" value="${product.id}" />
                             <button type="submit" class="btn btn-add mt-2"><i class="fas fa-cart-plus"></i> Add to Cart</button>
