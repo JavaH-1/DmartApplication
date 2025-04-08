@@ -2,38 +2,27 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.dmart</groupId>
+    <groupId>DmartProject</groupId>
     <artifactId>dmart-registration-login</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>war</packaging>
 
     <properties>
-        <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
-        <!-- Spring Core -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>5.3.30</version>
-        </dependency>
 
-        <!-- Spring Context -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>5.3.30</version>
-        </dependency>
-
-        <!-- Spring Web MVC -->
+        <!-- Spring MVC -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>5.3.30</version>
+            <version>5.3.36</version>
         </dependency>
 
         <!-- Servlet API -->
@@ -44,76 +33,66 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- JSP API -->
+        <!-- JSP and JSTL -->
         <dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>javax.servlet.jsp-api</artifactId>
-            <version>2.3.3</version>
-            <scope>provided</scope>
+            <groupId>javax.servlet.jsp.jstl</groupId>
+            <artifactId>javax.servlet.jsp.jstl-api</artifactId>
+            <version>1.2.1</version>
         </dependency>
-
-        <!-- JSTL -->
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>jstl-impl</artifactId>
             <version>1.2</version>
         </dependency>
 
-        <!-- MySQL Connector/J -->
+        <!-- MySQL Connector -->
         <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
             <version>8.0.33</version>
         </dependency>
 
-        <!-- Spring JDBC (Required for DriverManagerDataSource) -->
+        <!-- Spring JDBC -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-            <version>5.3.30</version>
+            <version>5.3.36</version>
         </dependency>
 
-        <!-- Logging (SLF4J with Log4j Binding) -->
+        <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.36</version>
         </dependency>
-        
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.36</version>
         </dependency>
 
-        <!-- Jackson (Optional: for JSON support) -->
+        <!-- Commons DBUtils (optional but helpful for JDBC) -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.15.3</version>
+            <groupId>commons-dbutils</groupId>
+            <artifactId>commons-dbutils</artifactId>
+            <version>1.7</version>
         </dependency>
+
     </dependencies>
 
     <build>
         <finalName>dmart-registration-login</finalName>
         <plugins>
-            <!-- Compiler Plugin -->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
+                <version>3.8.1</version>
             </plugin>
 
-            <!-- WAR Plugin -->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.4.0</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
+                <version>3.3.1</version>
             </plugin>
         </plugins>
     </build>

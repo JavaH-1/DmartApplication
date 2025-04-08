@@ -7,6 +7,7 @@ import com.dmart.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,13 +18,13 @@ public class UserController {
 
     @Autowired
     private UserService service;
-    
+
     @Autowired
     private ProductService productService;
 
     @GetMapping("/")
     public String welcome() {
-        return "welcome";
+        return "index";
     }
 
     @GetMapping("/register")
@@ -50,13 +51,13 @@ public class UserController {
         if (service.registerUser(user)) {
             model.addAttribute("msg", "✅ Registration successful!");
             model.addAttribute("type", "success");
-            return "register";
         } else {
             model.addAttribute("msg", "❌ Something went wrong during registration...");
             model.addAttribute("type", "danger");
-            model.addAttribute("states", service.getAllStates());
-            return "register";
         }
+
+        model.addAttribute("states", service.getAllStates());
+        return "register";
     }
 
     @GetMapping("/login")
@@ -72,12 +73,7 @@ public class UserController {
         User user = service.loginUser(username, password);
         if (user != null) {
             session.setAttribute("user", user);
-
-            if ("Admin".equalsIgnoreCase(user.getUsertype())) {
-                return "redirect:/admin/dashboard"; // 🔄 Admin gets redirected here
-            }
-
-            return "redirect:/dashboard"; // Regular user
+            return user.getUsertype().equalsIgnoreCase("admin") ? "redirect:/admin/dashboard" : "redirect:/dashboard";
         } else {
             model.addAttribute("msg", "❌ Invalid username or password");
             model.addAttribute("type", "danger");
@@ -90,77 +86,27 @@ public class UserController {
         User user = (User) session.getAttribute("user");
         if (user != null) {
             model.addAttribute("user", user);
-
-            List<Product> productList = productService.getAllProducts();
-            model.addAttribute("productList", productList);
-
+            model.addAttribute("productList", productService.getAllProducts());
             return "dashboard";
-        } else {
-            return "redirect:/login";
         }
+        return "redirect:/login";
     }
-
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/";
-    }
-    
-    //ADMIN access controllers
-    @GetMapping("/admin/dashboard")
-    public String adminDashboard(HttpSession session, Model model) {
-        User user = (User) session.getAttribute("user");
-
-        if (user != null && "admin".equalsIgnoreCase(user.getUsertype())) {
-            // Fetch all products
-            List<Product> productList = productService.getAllProducts();
-            model.addAttribute("productList", productList);
-
-            // Fetch customers only
-            List<User> customerList = service.getAllCustomers(); // You’ll add this method in UserService
-            model.addAttribute("customerList", customerList);
-
-            return "admin-dashboard";
-        }
-
         return "redirect:/login";
     }
 
-    @PostMapping("/admin/addProduct")
-    public String addProduct(@ModelAttribute Product product, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-
-        if (user != null && "admin".equalsIgnoreCase(user.getUsertype())) {
-            productService.addProduct(product); // You’ll add this in ProductService
-            return "redirect:/admin/dashboard";
-        }
-
-        return "redirect:/login";
-    }
-
-    @GetMapping("/admin/deleteProduct/{id}")
-    public String deleteProduct(@PathVariable("id") int id, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-
-        if (user != null && "admin".equalsIgnoreCase(user.getUsertype())) {
-            productService.deleteProduct(id); // You’ll add this in ProductService
-            return "redirect:/admin/dashboard";
-        }
-
-        return "redirect:/login";
-    }
     @PostMapping("/addToCart")
     public String addToCart(@RequestParam("productId") int productId, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) return "redirect:/login";
 
         List<Product> cart = (List<Product>) session.getAttribute("cart");
-        if (cart == null) {
-            cart = new ArrayList<>();
-        }
+        if (cart == null) cart = new ArrayList<>();
 
-        Product product = productService.getProductById(productId); // service method to fetch single product
+        Product product = productService.getProductById(productId);
         if (product != null) {
             cart.add(product);
             session.setAttribute("cart", cart);
@@ -172,7 +118,7 @@ public class UserController {
     @GetMapping("/viewcart")
     public String viewCart(HttpSession session, Model model) {
         List<Product> cartItems = (List<Product>) session.getAttribute("cart");
-        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("cartItems", cartItems != null ? cartItems : new ArrayList<>());
         return "viewcart";
     }
 
@@ -185,5 +131,4 @@ public class UserController {
         }
         return "redirect:/viewcart";
     }
-
 }
