@@ -15,27 +15,52 @@
         html, body {
             height: 100%;
             margin: 0;
+            padding: 0;
             background-color: #0d0d0d;
             color: #fff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .navbar {
+            position: fixed;
+            top: 0;
+            padding-top: 24px;
+            width: 100%;
             z-index: 1100;
-            margin-bottom: 0;
-            border-radius: 0;
+        }
+
+        .navbar .navbar-brand {
+    font-weight: bold;
+    color: #ffcc00 !important;
+    font-size: 1.8rem; /* Add this line or adjust as needed */
+}
+
+
+        .navbar .nav-link,
+        .navbar .dropdown-toggle {
+            color: #ffcc00 !important;
+            font-weight: bold;
+             font-size: 1.3rem;
+        }
+
+        .navbar .dropdown-menu {
+            background-color: #1c1c1c;
+            color: white;
+        }
+
+        .navbar .dropdown-menu a {
+            color: white;
         }
 
         .sidebar {
-            height: calc(100vh - 56px);
-            background-color: #1c1c1c;
-            width: 240px;
             position: fixed;
             top: 56px;
             left: 0;
+            width: 240px;
+            height: calc(100% - 56px);
+            background-color: #1c1c1c;
             padding-top: 30px;
             z-index: 1000;
-            margin: 0;
         }
 
         .sidebar a {
@@ -52,20 +77,9 @@
             color: #ffcc00;
         }
 
-        .sidebar .user-dropdown {
-            position: absolute;
-            bottom: 30px;
-            width: 100%;
-        }
-
-        .sidebar .user-dropdown .dropdown-menu {
-            background-color: #1c1c1c;
-            color: white;
-        }
-
         .content-area {
             margin-left: 240px;
-            padding: 100px 30px 30px;
+            padding: 100px 30px 30px 30px;
         }
 
         .welcome-msg {
@@ -76,17 +90,17 @@
 
         .product-card {
             background-color: #1a1a1a;
-            border-radius: 20px;
-            padding: 20px;
-            max-width: 310px;
-            height: 350px;
+            border-radius: 30px;
+            padding: 15px;
+            width: 100%;
+            height: 100%;
             transition: all 0.3s ease-in-out;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
             text-align: center;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 10px rgba(25, 25, 25, 0.05);
         }
 
         .product-card:hover {
@@ -145,18 +159,6 @@
             background-color: #e68900;
         }
 
-        footer {
-            height: 60px;
-            background-color: #1c1c1c;
-            color: #bbb;
-            text-align: center;
-            line-height: 60px;
-            position: fixed;
-            bottom: 0;
-            left: 240px;
-            width: calc(100% - 240px);
-        }
-
         #cart-alert {
             top: 80px;
             right: 80px;
@@ -167,20 +169,15 @@
 
         @media (max-width: 768px) {
             .sidebar {
+                position: relative;
                 width: 100%;
                 height: auto;
-                position: relative;
                 top: 0;
             }
 
             .content-area {
                 margin-left: 0;
-                padding-top: 100px;
-            }
-
-            footer {
-                left: 0;
-                width: 100%;
+                padding-top: 120px;
             }
         }
     </style>
@@ -188,16 +185,28 @@
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand text-warning font-weight-bold m-0 px-3" href="dashboard">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="dashboard">
         <i class="fas fa-store"></i> D-Mart
     </a>
+
+    <div class="ml-auto d-flex align-items-center">
+        <div class="dropdown mr-4">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-toggle="dropdown">
+                <i class="fas fa-user-circle"></i> ${user.username}
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">My Profile</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="logout">Logout</a>
+            </div>
+        </div>
+    </div>
 </nav>
 
 <!-- Sidebar -->
 <div class="sidebar">
     <a class="active" href="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-
     <a href="viewcart">
         <i class="fas fa-shopping-cart"></i> Cart
         <c:if test="${cartSize > 0}">
@@ -206,17 +215,6 @@
     </a>
     <a href="#"><i class="fas fa-shipping-fast"></i> Track Order</a>
     <a href="#"><i class="fas fa-credit-card"></i> Payments</a>
-
-    <div class="dropdown user-dropdown px-3">
-        <a class="dropdown-toggle text-white" href="#" id="userDropdown" data-toggle="dropdown">
-            <i class="fas fa-user-circle"></i> ${user.username}
-        </a>
-        <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">My Profile</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="logout">Logout</a>
-        </div>
-    </div>
 </div>
 
 <!-- Main Content -->
@@ -226,10 +224,10 @@
             Welcome to D-Mart, <strong>${user.username != null ? user.username : 'Guest'}</strong>
         </div>
 
-        <div class="row justify-content-center">
+        <div class="row">
             <c:forEach var="product" items="${productList}">
-                <div class="col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
-                    <div class="product-card">
+                <div class="col-md-6 col-lg-4 col-xl-3 mb-4 d-flex align-items-stretch">
+                    <div class="product-card w-100">
                         <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
                         <div class="product-title">${product.name}</div>
                         <div><span class="strike">₹${product.mrp}</span></div>
@@ -253,11 +251,6 @@
     <strong>Success!</strong> Item added to cart.
     <button type="button" class="close" onclick="$('#cart-alert').hide();">&times;</button>
 </div>
-
-<!-- Footer -->
-<footer>
-    &copy; 2025 D-Mart. All rights reserved.
-</footer>
 
 <!-- JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

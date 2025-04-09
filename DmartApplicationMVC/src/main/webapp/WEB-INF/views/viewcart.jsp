@@ -133,6 +133,29 @@
             font-size: 1rem;
             color: #ffc107 !important;
         }
+
+        .summary-box {
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            color: #ccc;
+        }
+
+        .summary-box h5 {
+            color: #ffc107;
+        }
+
+        .summary-box .row {
+            margin-bottom: 10px;
+        }
+
+        .btn-checkout {
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 10px 20px;
+        }
+
     </style>
 </head>
 <body>
@@ -181,7 +204,11 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <c:set var="totalMrp" value="0"/>
+                        <c:set var="totalPrice" value="0"/>
                         <c:forEach var="item" items="${cartItems}">
+                            <c:set var="totalMrp" value="${totalMrp + item.mrp}"/>
+                            <c:set var="totalPrice" value="${totalPrice + item.dmartPrice}"/>
                             <tr>
                                 <td class="product-name">
                                     <img src="${item.imageUrl}" alt="${item.name}" class="product-img"
@@ -203,9 +230,31 @@
                     </table>
                 </div>
 
-                <a href="dashboard" class="btn btn-warning">
-                    <i class="fas fa-arrow-left continue-icon"></i>Continue Shopping
-                </a>
+                <!-- Summary Section -->
+                <div class="summary-box">
+                    <div class="row">
+                        <div class="col-md-6"><strong>Total MRP:</strong></div>
+                        <div class="col-md-6 text-right">₹${totalMrp}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Total D-Mart Price:</strong></div>
+                        <div class="col-md-6 text-right text-warning">₹${totalPrice}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6"><strong>Total Savings:</strong></div>
+                        <div class="col-md-6 text-right text-success">₹${totalMrp - totalPrice}</div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="dashboard" class="btn btn-warning">
+                        <i class="fas fa-arrow-left continue-icon"></i>Continue Shopping
+                    </a>
+                    <a href="checkout" class="btn btn-success btn-checkout">
+                        <i class="fas fa-credit-card"></i> Proceed to Checkout
+                    </a>
+                </div>
             </c:otherwise>
         </c:choose>
     </div>
