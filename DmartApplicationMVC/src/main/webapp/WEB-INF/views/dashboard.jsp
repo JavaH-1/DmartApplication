@@ -12,32 +12,72 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
     <style>
-        body {
+        html, body {
+            height: 100%;
+            margin: 0;
             background-color: #0d0d0d;
             color: #fff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .navbar {
+            z-index: 1100;
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+
+        .sidebar {
+            height: calc(100vh - 56px);
             background-color: #1c1c1c;
-            padding: 20px;
+            width: 240px;
+            position: fixed;
+            top: 56px;
+            left: 0;
+            padding-top: 30px;
+            z-index: 1000;
+            margin: 0;
         }
 
-        .navbar-brand, .nav-link {
-            color: #ffffff !important;
-            font-weight: 500;
+        .sidebar a {
+            padding: 15px 20px;
+            display: block;
+            color: #fff;
+            text-decoration: none;
             font-size: 1rem;
+            font-weight: 500;
         }
 
-        .container {
-            margin-top: 40px;
+        .sidebar a:hover, .sidebar a.active {
+            background-color: #333;
+            color: #ffcc00;
+        }
+
+        .sidebar .user-dropdown {
+            position: absolute;
+            bottom: 30px;
+            width: 100%;
+        }
+
+        .sidebar .user-dropdown .dropdown-menu {
+            background-color: #1c1c1c;
+            color: white;
+        }
+
+        .content-area {
+            margin-left: 240px;
+            padding: 100px 30px 30px;
+        }
+
+        .welcome-msg {
+            font-size: 2.3rem;
+            margin-bottom: 30px;
+            color: #ffcc00;
         }
 
         .product-card {
             background-color: #1a1a1a;
             border-radius: 20px;
             padding: 20px;
-            width: 100%;
             max-width: 310px;
             height: 350px;
             transition: all 0.3s ease-in-out;
@@ -88,7 +128,6 @@
             padding: 4px 8px;
             border-radius: 10px;
             margin-top: 4px;
-            display: inline-block;
         }
 
         .btn-add {
@@ -106,53 +145,87 @@
             background-color: #e68900;
         }
 
-        .welcome-msg {
-            font-size: 1.3rem;
-            margin-bottom: 30px;
-            color: #ffcc00;
-        }
-
         footer {
-            margin-top: 100px;
-            padding: 20px;
+            height: 60px;
             background-color: #1c1c1c;
             color: #bbb;
             text-align: center;
+            line-height: 60px;
+            position: fixed;
+            bottom: 0;
+            left: 240px;
+            width: calc(100% - 240px);
+        }
+
+        #cart-alert {
+            top: 80px;
+            right: 80px;
+            z-index: 1050;
+            font-size: 0.9rem;
+            padding: 8px 16px;
         }
 
         @media (max-width: 768px) {
-            .product-card {
+            .sidebar {
+                width: 100%;
                 height: auto;
+                position: relative;
+                top: 0;
+            }
+
+            .content-area {
+                margin-left: 0;
+                padding-top: 100px;
+            }
+
+            footer {
+                left: 0;
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand animate__animated animate__fadeInLeft" href="#"><i class="fas fa-store"></i> D-Mart</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse animate__animated animate__fadeInRight" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Product List</a></li>
-                <li class="nav-item"><a class="nav-link" href="viewcart">View Cart</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Track Order</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Payments</a></li>
-                <li class="nav-item"><a class="nav-link" href="logout">Logout</a></li>
-            </ul>
-        </div>
-    </nav>
 
-    <!-- Welcome Section -->
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand text-warning font-weight-bold m-0 px-3" href="dashboard">
+        <i class="fas fa-store"></i> D-Mart
+    </a>
+</nav>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <a class="active" href="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+
+    <a href="viewcart">
+        <i class="fas fa-shopping-cart"></i> Cart
+        <c:if test="${cartSize > 0}">
+            <span class="badge badge-warning">${cartSize}</span>
+        </c:if>
+    </a>
+    <a href="#"><i class="fas fa-shipping-fast"></i> Track Order</a>
+    <a href="#"><i class="fas fa-credit-card"></i> Payments</a>
+
+    <div class="dropdown user-dropdown px-3">
+        <a class="dropdown-toggle text-white" href="#" id="userDropdown" data-toggle="dropdown">
+            <i class="fas fa-user-circle"></i> ${user.username}
+        </a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">My Profile</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="logout">Logout</a>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="content-area">
     <div class="container text-center animate__animated animate__fadeInUp">
         <div class="welcome-msg">
             Welcome to D-Mart, <strong>${user.username != null ? user.username : 'Guest'}</strong>
         </div>
 
-        <!-- Product Grid -->
         <div class="row justify-content-center">
             <c:forEach var="product" items="${productList}">
                 <div class="col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
@@ -162,23 +235,57 @@
                         <div><span class="strike">₹${product.mrp}</span></div>
                         <div class="price">₹${product.dmartPrice}</div>
                         <div class="discount">&#8377;${product.discount} OFF</div>
-                        <form method="post" action="addToCart" style="width: 100%;">
+                        <form class="add-to-cart-form" style="width: 100%;">
                             <input type="hidden" name="productId" value="${product.id}" />
-                            <button type="submit" class="btn btn-add mt-2"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                            <button type="submit" class="btn btn-add mt-2">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
                         </form>
                     </div>
                 </div>
             </c:forEach>
         </div>
     </div>
+</div>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 D-Mart. All rights reserved.</p>
-    </footer>
+<!-- Cart Alert -->
+<div id="cart-alert" class="alert alert-success alert-dismissible fade show position-fixed" role="alert" style="display: none;">
+    <strong>Success!</strong> Item added to cart.
+    <button type="button" class="close" onclick="$('#cart-alert').hide();">&times;</button>
+</div>
 
-    <!-- JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Footer -->
+<footer>
+    &copy; 2025 D-Mart. All rights reserved.
+</footer>
+
+<!-- JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.add-to-cart-form').on('submit', function (e) {
+            e.preventDefault();
+            var form = $(this);
+            var productId = form.find('input[name="productId"]').val();
+
+            $.ajax({
+                url: 'addToCart',
+                type: 'POST',
+                data: { productId: productId },
+                success: function () {
+                    $('#cart-alert').fadeIn();
+                    setTimeout(function () {
+                        $('#cart-alert').fadeOut();
+                    }, 2000);
+                },
+                error: function () {
+                    alert("Error adding item to cart.");
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
