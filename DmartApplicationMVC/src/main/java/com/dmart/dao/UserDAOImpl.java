@@ -1,118 +1,80 @@
 package com.dmart.dao;
 
 import com.dmart.model.*;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
-import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
 
     @Autowired
-    private DataSource dataSource;
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public boolean registerUser(User user) {
-        String sql = "INSERT INTO users(fullname, username, email, mobile, password, address, state_id, city_id, pincode, usertype) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, user.getFullname());
-            ps.setString(2, user.getUsername());
-            ps.setString(3, user.getEmail());
-            ps.setString(4, user.getMobile());
-            ps.setString(5, user.getPassword());
-            ps.setString(6, user.getAddress());
-            ps.setInt(7, user.getStateId());
-            ps.setInt(8, user.getCityId());
-            ps.setString(9, user.getPincode());
-            ps.setString(10, user.getUsertype());
-            return ps.executeUpdate() > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        String sql = "INSERT INTO users(fullname, username, email, mobile, password, address, state_id, city_id, pincode, usertype) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        int rows = jdbcTemplate.update(sql, user.getFullname(), user.getUsername(), user.getEmail(), user.getMobile(),
+                user.getPassword(), user.getAddress(), user.getStateId(), user.getCityId(), user.getPincode(), user.getUsertype());
+        return rows > 0;
     }
 
     @Override
     public User loginUser(String username, String password) {
-        String sql = "SELECT * FROM users WHERE username=? AND password=?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, username);
-            ps.setString(2, password);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                User user = new User();
-                user.setId(rs.getInt("id"));
-                user.setUsername(username);
-                user.setFullname(rs.getString("fullname"));
-                user.setEmail(rs.getString("email"));
-                user.setUsertype(rs.getString("usertype")); // ✅ Critical line added
-                return user;
-            }
+        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{username, password}, new RowMapper<User>() {
+                public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    User user = new User();
+                    user.setId(rs.getInt("id"));
+                    user.setUsername(rs.getString("username"));
+                    user.setFullname(rs.getString("fullname"));
+                    user.setEmail(rs.getString("email"));
+                    user.setUsertype(rs.getString("usertype"));
+                    return user;
+                }
+            });
         } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
-        return null;
     }
-
 
     @Override
     public List<State> getAllStates() {
-        List<State> list = new ArrayList<>();
         String sql = "SELECT * FROM states";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                State s = new State();
-                s.setId(rs.getInt("id"));
-                s.setStateName(rs.getString("state_name"));
-                list.add(s);
+        return jdbcTemplate.query(sql, new RowMapper<State>() {
+            public State mapRow(ResultSet rs, int rowNum) throws SQLException {
+                State state = new State();
+                state.setId(rs.getInt("id"));
+                state.setStateName(rs.getString("state_name"));
+                return state;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
+        });
     }
 
     @Override
     public List<City> getCitiesByStateId(int stateId) {
-        List<City> list = new ArrayList<>();
-        String sql = "SELECT * FROM cities WHERE state_id=?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, stateId);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                City c = new City();
-                c.setId(rs.getInt("id"));
-                c.setCityName(rs.getString("city_name"));
-                c.setStateId(stateId);
-                list.add(c);
+        String sql = "SELECT * FROM cities WHERE state_id = ?";
+        return jdbcTemplate.query(sql, new Object[]{stateId}, new RowMapper<City>() {
+            public City mapRow(ResultSet rs, int rowNum) throws SQLException {
+                City city = new City();
+                city.setId(rs.getInt("id"));
+                city.setCityName(rs.getString("city_name"));
+                city.setStateId(rs.getInt("state_id"));
+                return city;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
+        });
     }
 
-    // ✅ Implemented the missing method
     @Override
     public boolean isEmailRegistered(String email) {
-        String sql = "SELECT COUNT(*) FROM users WHERE email=?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, email);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+        String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, new Object[]{email}, Integer.class);
+        return count != null && count > 0;
     }
 }

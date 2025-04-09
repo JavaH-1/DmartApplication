@@ -1,11 +1,14 @@
 com\dmart\model\User.class
+com\dmart\dao\UserDAOImpl$1.class
 com\dmart\service\ProductServiceImpl.class
 com\dmart\controller\UserController.class
+com\dmart\dao\UserDAOImpl$2.class
 com\dmart\service\UserService.class
 com\dmart\dao\UserDAO.class
 com\dmart\model\City.class
 com\dmart\service\ProductService.class
 com\dmart\config\AppConfig.class
+com\dmart\controller\AdminController.class
 com\dmart\mapper\ProductRowMapper.class
 com\dmart\dao\ProductDAOImpl.class
 com\dmart\service\UserServiceImpl.class
@@ -13,4 +16,5 @@ com\dmart\dao\UserDAOImpl.class
 com\dmart\model\Product.class
 com\dmart\mapper\UserRowMapper.class
 com\dmart\model\State.class
+com\dmart\dao\UserDAOImpl$3.class
 com\dmart\dao\ProductDAO.class

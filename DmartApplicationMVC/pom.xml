@@ -71,11 +71,18 @@
             <version>1.7.36</version>
         </dependency>
 
-        <!-- Commons DBUtils (optional but helpful for JDBC) -->
+        <!-- Commons DBUtils -->
         <dependency>
             <groupId>commons-dbutils</groupId>
             <artifactId>commons-dbutils</artifactId>
             <version>1.7</version>
+        </dependency>
+
+        <!-- ✅ Jackson for JSON conversion (for AJAX calls in Spring MVC) -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.15.3</version>
         </dependency>
 
     </dependencies>

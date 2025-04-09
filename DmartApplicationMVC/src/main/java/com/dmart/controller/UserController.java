@@ -39,6 +39,8 @@ public class UserController {
         return service.getCitiesByStateId(stateId);
     }
 
+
+
     @PostMapping("/register")
     public String doRegister(@ModelAttribute User user, Model model) {
         if (service.checkEmailExists(user.getEmail())) {

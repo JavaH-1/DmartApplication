@@ -49,17 +49,15 @@
         }
 
         .logo {
-             display: block;
-             margin: 0 auto 20px auto;
-             max-width: 120px;
-             width: 100px;
-             height: 100px;
-             border-radius: 50%;
-             object-fit: cover;
-             border: 3px solid #ffc107;
-             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 120px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ffc107;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
         h2 {
@@ -87,61 +85,62 @@
         <form action="register" method="post">
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label>Full Name</label>
-                    <input type="text" name="fullname" class="form-control" required>
+                    <label for="fullname">Full Name</label>
+                    <input type="text" id="fullname" name="fullname" class="form-control" placeholder="Enter full name" required>
                 </div>
                 <div class="form-group col-md-6">
-                    <label>Username</label>
-                    <input type="text" name="username" class="form-control" required>
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Choose a username" required>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label>Email</label>
-                    <input type="email" name="email" class="form-control" required>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="example@domain.com" required>
                 </div>
                 <div class="form-group col-md-6">
-                    <label>Mobile</label>
-                    <input type="text" name="mobile" class="form-control" required>
+                    <label for="mobile">Mobile</label>
+                    <input type="text" id="mobile" name="mobile" class="form-control" placeholder="Enter mobile number" required>
                 </div>
             </div>
 
             <div class="form-group">
-                <label>Address</label>
-                <textarea name="address" class="form-control" required></textarea>
+                <label for="address">Address</label>
+                <textarea id="address" name="address" class="form-control" placeholder="Enter full address" required></textarea>
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <label>State</label>
-                    <select id="state" name="stateId" class="form-control" required>
-                        <option value="">Select State</option>
-                        <c:forEach var="state" items="${states}">
-                            <option value="${state.id}">${state.stateName}</option>
-                        </c:forEach>
-                    </select>
+                   <label for="state">State</label>
+  <select name="stateId" id="state" class="form-control" required>
+    <option value="">-- Select State --</option>
+    <c:forEach var="s" items="${states}">
+      <option value="${s.id}">${s.stateName}</option>
+    </c:forEach>
+  </select>
                 </div>
                 <div class="form-group col-md-4">
-                    <label>City</label>
-                    <select id="city" name="cityId" class="form-control" required>
-                        <option value="">Select City</option>
-                    </select>
+                    <label for="city">City</label>
+  <select name="cityId" id="city" class="form-control" required>
+    <option value="">-- Select City --</option>
+    <!-- Options will be populated dynamically using AJAX -->
+  </select>
                 </div>
                 <div class="form-group col-md-4">
-                    <label>Pincode</label>
-                    <input type="text" name="pincode" class="form-control" required>
+                    <label for="pincode">Pincode</label>
+                    <input type="text" id="pincode" name="pincode" class="form-control" placeholder="Enter pincode" required>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label>Password</label>
-                    <input type="password" name="password" class="form-control" required>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Choose a password" required>
                 </div>
                 <div class="form-group col-md-6">
-                    <label>User Type</label>
-                    <select name="usertype" class="form-control" required>
+                    <label for="usertype">User Type</label>
+                    <select id="usertype" name="usertype" class="form-control" required>
                         <option value="Customer">Customer</option>
                         <option value="Admin">Admin</option>
                     </select>
@@ -176,21 +175,35 @@
 
 <!-- AJAX Script -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
-    $('#state').on('change', function () {
-        const stateId = $(this).val();
+  $(document).ready(function () {
+    $("#state").change(function () {
+      var stateId = $(this).val();
+      if (stateId) {
         $.ajax({
-            url: 'getCities',
-            type: 'GET',
-            data: { stateId: stateId },
-            success: function (cities) {
-                $('#city').empty().append('<option value="">Select City</option>');
-                $.each(cities, function (index, city) {
-                    $('#city').append('<option value="' + city.id + '">' + city.cityName + '</option>');
-                });
-            }
+          url: "getCities",
+          type: "GET",
+          data: { stateId: stateId },
+          success: function (cities) {
+            var $cityDropdown = $("#city");
+            $cityDropdown.empty();
+            $cityDropdown.append("<option value=''>-- Select City --</option>");
+            $.each(cities, function (index, city) {
+              $cityDropdown.append("<option value='" + city.id + "'>" + city.cityName + "</option>");
+            });
+          },
+          error: function () {
+            alert("Failed to load cities!");
+          }
         });
+      } else {
+        $("#city").empty().append("<option value=''>-- Select City --</option>");
+      }
     });
+  });
 </script>
+
 </body>
 </html>
